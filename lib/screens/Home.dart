@@ -30,14 +30,26 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Animation!'),
-      ),
-      body: buildAnimation(),
-    );
+        appBar: AppBar(
+          title: Text('Animation!'),
+        ),
+        body: GestureDetector(
+          child: buildAnimation(),
+          onTap: () {
+            catController.forward();
+          },
+        ));
   }
 
   Widget buildAnimation() {
-    return Cat();
+    return AnimatedBuilder(
+      animation: catAnimation,
+      builder: (context, child) {
+        //Child argument is passed in because we just change a small part and the animation might be 60frame/s , and we don't want to rerender 60 times a second
+        return Container(
+            child: child, margin: EdgeInsets.only(top: catAnimation.value));
+      },
+      child: Cat(),
+    );
   }
 }
